@@ -1,9 +1,10 @@
 import './App.css';
+import NavigationBar from './components/navigation/Nav'
 
 function App() {
   return (
     <div className="App">
-      <p>Editor</p>
+      <NavigationBar></NavigationBar>
     </div>
   );
 }
