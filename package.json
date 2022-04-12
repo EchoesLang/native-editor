@@ -5,6 +5,10 @@
   "description": "native-Nympheia Editor",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.1",
+    "@mui/material": "^5.6.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
@@ -18,8 +22,11 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "react-start": "set BROWSER=none && npm run start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-start": "set ELECTRON_START_URL=http://localhost:3000 && electron .",
+    "electron-pack": "npm run build && electron-builder build -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": [

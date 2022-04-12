@@ -1,10 +1,10 @@
 import './App.css';
-import NavigationBar from './components/navigation/Nav'
+import Paperbase from './React-front/Paperbase'
 
 function App() {
   return (
     <div className="App">
-      <NavigationBar></NavigationBar>
+      <Paperbase></Paperbase>
     </div>
   );
 }
