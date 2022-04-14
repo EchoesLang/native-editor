@@ -17,6 +17,7 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import mpStore from '../states/mainProcessState';
 
 const categories = [
     {
@@ -25,7 +26,6 @@ const categories = [
             {
                 id: 'Authentication',
                 icon: <PeopleIcon />,
-                active: true,
             },
             { id: 'Database', icon: <DnsRoundedIcon /> },
             { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
@@ -56,18 +56,43 @@ const itemCategory = {
 
 export default function Navigator(props) {
     const { ...other } = props;
+    const [mainIndex, setMainIndex] = React.useState(0);
+
+    const { navGuide, navId, SetProcess } = mpStore();
+
+    const handleChange = (event, newValue) => {
+        let index = 0;
+        switch (newValue) {
+            case 'Authentication':
+                index = 0;
+                break;
+            case 'Database':
+                index = 1;
+                break;
+            case 'Storage':
+                index = 2;
+                break;
+            case 'Hosting':
+                index = 3;
+                break;
+            case 'Functions':
+                index = 4;
+                break;
+            case 'Machine learning':
+                index = 5;
+                break;
+            default:
+                break;
+        }
+        setMainIndex(index);
+        SetProcess(index, newValue);
+    };
 
     return (
         <Drawer variant="permanent" {...other}>
             <List disablePadding>
                 <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-                    Paperbase
-                </ListItem>
-                <ListItem sx={{ ...item, ...itemCategory }}>
-                    <ListItemIcon>
-                        <HomeIcon />
-                    </ListItemIcon>
-                    <ListItemText>Project Overview</ListItemText>
+                    Nympheia-Editor
                 </ListItem>
                 {categories.map(({ id, children }) => (
                     <Box key={id} sx={{ bgcolor: '#101F33' }}>
@@ -76,13 +101,13 @@ export default function Navigator(props) {
                         </ListItem>
                         {children.map(({ id: childId, icon, active }) => (
                             <ListItem disablePadding key={childId}>
-                                <ListItemButton selected={active} sx={item}>
+                                <ListItemButton selected={childId === navId} onClick={(event) => handleChange(event, childId)} 
+                                sx={item}>
                                     <ListItemIcon>{icon}</ListItemIcon>
                                     <ListItemText>{childId}</ListItemText>
                                 </ListItemButton>
                             </ListItem>
                         ))}
-
                         <Divider sx={{ mt: 2 }} />
                     </Box>
                 ))}

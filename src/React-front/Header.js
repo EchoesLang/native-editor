@@ -14,11 +14,57 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import htsStore from '../states/headTabState';
+import { alertTitleClasses } from '@mui/material';
+import { SettingsCellOutlined } from '@mui/icons-material';
 
-const lightColor = 'rgba(255, 255, 255, 0.7)';
+const lightColor = 'rgba(0, 234, 255, 0.7)';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 function Header(props) {
     const { onDrawerToggle } = props;
+
+    const [value, setValue] = React.useState(0);
+
+    const { count, SetCount } = htsStore();
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+        SetCount(newValue);
+    };
 
     return (
         <React.Fragment>
@@ -38,7 +84,7 @@ function Header(props) {
                         <Grid item xs />
                         <Grid item>
                             <Link
-                                href="/"
+                                href="http://www.echoechoes.site/nympheia/editor"
                                 variant="body2"
                                 sx={{
                                     textDecoration: 'none',
@@ -52,18 +98,6 @@ function Header(props) {
                             >
                                 Go to docs
                             </Link>
-                        </Grid>
-                        <Grid item>
-                            <Tooltip title="Alerts • No alerts">
-                                <IconButton color="inherit">
-                                    <NotificationsIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                        <Grid item>
-                            <IconButton color="inherit" sx={{ p: 0.5 }}>
-                                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-                            </IconButton>
                         </Grid>
                     </Grid>
                 </Toolbar>
@@ -84,7 +118,9 @@ function Header(props) {
                         </Grid>
                         <Grid item>
                             <Tooltip title="Help">
-                                <IconButton color="inherit">
+                                <IconButton color="inherit" href='http://www.echoechoes.site/nympheia/editor/help'
+                                    rel="noopener noreferrer"
+                                    target="_blank">
                                     <HelpIcon />
                                 </IconButton>
                             </Tooltip>
@@ -93,16 +129,32 @@ function Header(props) {
                 </Toolbar>
             </AppBar>
             <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
-                <Tabs value={0} textColor="inherit">
-                    <Tab label="Users" />
-                    <Tab label="Sign-in method" />
-                    <Tab label="Templates" />
-                    <Tab label="Usage" />
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" textColor="inherit">
+                    <Tab label="File" {...a11yProps(0)} />
+                    <Tab label="System" {...a11yProps(1)} />
                 </Tabs>
             </AppBar>
+
         </React.Fragment>
     );
 }
+
+/*function TabpanelDummy() {
+    return (
+        <div>
+            <TabPanel value={value} index={0}>
+                <p>Item Zero</p>
+                <p>{count}</p>
+                <p>{value}</p>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <p>Item One</p>
+                <p>{count}</p>
+                <p>{value}</p>
+            </TabPanel>
+        </div>
+    )
+}*/
 
 Header.propTypes = {
     onDrawerToggle: PropTypes.func.isRequired,

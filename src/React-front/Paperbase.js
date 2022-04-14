@@ -6,17 +6,32 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './Navigator';
-import Content from './Content';
+import Content from './Contents/Content';
+import Content2 from './Contents/Content2';
 import Header from './Header';
+import htsStore from '../states/headTabState';
+import mpStore from '../states/mainProcessState';
 
 function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
-            {'Copyright © '}
+            {'Template by © '}
             <Link color="inherit" href="https://mui.com/">
                 mui.com
             </Link>{' '}
-            {new Date().getFullYear()}.
+            {new Date().getFullYear()}
+        </Typography>
+    );
+}
+
+function Copyright2() {
+    return (
+        <Typography variant="body2" color="text.secondary" align="center">
+            {'Copyright © '}
+            <Link color="inherit" href="http://echoechoes.site/">
+                echoechoes.site
+            </Link>{' '}
+            {new Date().getFullYear()}
         </Typography>
     );
 }
@@ -174,6 +189,9 @@ export default function Paperbase() {
         setMobileOpen(!mobileOpen);
     };
 
+    const { count } = htsStore();
+    const { navGuide } = mpStore();
+
     return (
         <ThemeProvider theme={theme}>
             <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -196,15 +214,35 @@ export default function Paperbase() {
                         sx={{ display: { sm: 'block', xs: 'none' } }}
                     />
                 </Box>
-                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <Header onDrawerToggle={handleDrawerToggle} />
-                    <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                        <Content />
-                    </Box>
-                    <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
-                        <Copyright />
-                    </Box>
-                </Box>
+                {(() => {
+                    switch (navGuide) {
+                        case 0:
+                            return (<Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                <Header onDrawerToggle={handleDrawerToggle} />
+                                <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                                    {(() => {
+                                        if (count === 0) {
+                                            return (<Content></Content>);
+                                        } else {
+                                            if (count === 1) {
+                                                return (<Content2></Content2>)
+                                            } else {
+                                                return (<></>)
+                                            }
+                                        }
+                                    })()}
+                                </Box>
+                                <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
+                                    <Copyright />
+                                    <Copyright2></Copyright2>
+                                </Box>
+                            </Box>);
+                        case 1:
+                            return (<p>Sub Page</p>);
+                        default:
+                            break;
+                    }
+                })()}
             </Box>
         </ThemeProvider>
     );
