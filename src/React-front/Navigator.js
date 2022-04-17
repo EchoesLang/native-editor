@@ -21,7 +21,7 @@ import mpStore from '../states/mainProcessState';
 
 const categories = [
     {
-        id: 'Build',
+        id: 'Editor',
         children: [
             {
                 id: 'Authentication',

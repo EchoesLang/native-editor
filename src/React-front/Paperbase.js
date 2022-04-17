@@ -6,40 +6,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from './Navigator';
-import Content from './Contents/Content';
-import Content2 from './Contents/Content2';
 import Header from './Header';
 import htsStore from '../states/headTabState';
 import mpStore from '../states/mainProcessState';
-
-function Copyright() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {'Template by © '}
-            <Link color="inherit" href="https://mui.com/">
-                mui.com
-            </Link>{' '}
-            {new Date().getFullYear()}
-        </Typography>
-    );
-}
-
-function Copyright2() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="http://echoechoes.site/">
-                echoechoes.site
-            </Link>{' '}
-            {new Date().getFullYear()}
-        </Typography>
-    );
-}
+import MainProcess from './MainProcess/MainProcess';
+import Main2 from './MainProcess/Main2';
 
 let theme = createTheme({
     palette: {
         primary: {
-            light: '#63ccff',
+            light: '#87d8ff',
             main: '#009be5',
             dark: '#006db3',
         },
@@ -189,7 +165,7 @@ export default function Paperbase() {
         setMobileOpen(!mobileOpen);
     };
 
-    const { count } = htsStore();
+    //const { count } = htsStore();
     const { navGuide } = mpStore();
 
     return (
@@ -217,28 +193,9 @@ export default function Paperbase() {
                 {(() => {
                     switch (navGuide) {
                         case 0:
-                            return (<Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                <Header onDrawerToggle={handleDrawerToggle} />
-                                <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                                    {(() => {
-                                        if (count === 0) {
-                                            return (<Content></Content>);
-                                        } else {
-                                            if (count === 1) {
-                                                return (<Content2></Content2>)
-                                            } else {
-                                                return (<></>)
-                                            }
-                                        }
-                                    })()}
-                                </Box>
-                                <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
-                                    <Copyright />
-                                    <Copyright2></Copyright2>
-                                </Box>
-                            </Box>);
+                            return (<MainProcess Header={handleDrawerToggle}></MainProcess>);
                         case 1:
-                            return (<p>Sub Page</p>);
+                            return (<Main2 Header={handleDrawerToggle}></Main2>);
                         default:
                             break;
                     }
